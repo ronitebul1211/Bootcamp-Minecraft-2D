@@ -30,6 +30,7 @@ minecraft.gameMapMatrix =
 
 /** Draw game Map UI + set event listener */
 minecraft.initGameMap = (matrix) => {
+  //ref -> game map container
   let gameMapContainer = document.querySelector('.map-container');
   //Game map matrix iteration
   for(let row = 0; row < matrix.length; row++){
@@ -62,7 +63,6 @@ minecraft.initGameMap = (matrix) => {
         }
         //Set tiles event listener
         tile.addEventListener('click', (event) => {
-          event.currentTarget
           console.log(`MATRIX ROW ${event.currentTarget.dataset.matrixRow} MATRIX COL ${event.currentTarget.dataset.matrixCol}`);
         })
         // Append current tile to game map
@@ -71,7 +71,58 @@ minecraft.initGameMap = (matrix) => {
   }
 }
 
+minecraft.tools = 
+[
+  {
+    name: 'axe',
+    removeTileType: [3, 4],
+    className: 'tool-axe'
+  },
+  {
+    name: 'pickaxe',
+    removeTileType: [5],
+    className: 'tool-pickaxe'
+  },
+  {
+    name: 'shovel',
+    removeTileType: [1,2],
+    className: 'tool-shovel'
+  }
+];
+
+/** Draw Tools UI + set event listener */
+minecraft.initTools = (toolsArray) => {
+  
+  let toolsContainer = document.querySelector('.tools-container');
+ 
+  for(let i = 0; i < toolsArray.length; i++){
+    
+    // Create Base tool
+    let toolDiv = document.createElement('div');
+    toolDiv.setAttribute('data-array-index', i);
+    
+    //Set tool UI 
+    toolDiv.classList.add('tool');
+    toolDiv.classList.add(toolsArray[i].className);
+    
+    //Set tool event listener
+     toolDiv.addEventListener('click', (event) => {
+      console.log(`tool locate in index ${event.currentTarget.dataset.arrayIndex} in tools array`);
+    })
+    // Append current tile to game map
+    toolsContainer.appendChild(toolDiv);
+
+  
+  }
+}
+
+
+
+
+
+
 
 /** Init Game *****************************************************************************************************/
 minecraft.initGameMap(minecraft.gameMapMatrix);
+minecraft.initTools(minecraft.tools);
 

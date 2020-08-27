@@ -1,6 +1,7 @@
 *,
 *::before,
-*::after{
+*::after
+{
   box-sizing: border-box;
   padding: 0;
   margin: 0;
@@ -15,16 +16,15 @@ main {
 }
 
 .map-container{
-  width: fit-content;
   display: grid;
   grid-template-columns: repeat(20, 1fr); 
   margin: auto;
 }
 
 .side-menu{
-  width: 100px;
+  width: 150px;
   height: 100%;
-  background: blue;
+  background: cornsilk;
 }
 
 /* Tiles */
@@ -32,10 +32,10 @@ main {
   width: 30px;
   height: 30px;
   background-size: cover;
-  background-image: url('img/grass.png');
 }
 .tile:hover{
-  border: 1px solid black
+  border: 2px dotted black;
+  cursor: pointer;
 }
 .tile-sky{background-image: url('img/sky.png');}
 .tile-ground{background-image: url('img/ground.png');}
@@ -44,3 +44,18 @@ main {
 .tile-leaves{background-image: url('img/leaves.png');}
 .tile-rock{background-image: url('img/rock.png');}
 
+/* Tools */
+.tool{
+  width: 75px;
+  height: 75px;
+  margin: 15px auto;
+  background-size: cover;
+  cursor: pointer;
+}
+.tool:hover{
+  border: 5px solid black;
+  border-radius: 50%;
+}
+.tool-axe{background-image: url('img/axe.png');}
+.tool-pickaxe{background-image: url('img/pickaxe.png');}
+.tool-shovel{background-image: url('img/shovel.png');}
