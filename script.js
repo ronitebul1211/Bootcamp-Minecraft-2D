@@ -3,6 +3,24 @@
 /**Game Object */
 const minecraft = {};
 
+/** @param {number} tileType - represent tile type e.g: 1
+  * @returns {string} css class name - e.g: tile-sky */
+minecraft.getTileCssClassName = (tileType) => {
+  switch(tileType) {
+    case 0:
+       return 'tile-sky';
+    case 1:
+      return 'tile-ground'; 
+    case 2:
+     return 'tile-grass';
+    case 3:
+      return 'tile-tree-trunk';
+    case 4:
+      return 'tile-leaves';
+    case 5:
+      return 'tile-rock'; 
+  } 
+};
 /** Game Map: Sky = 0, Ground = 1, Grass = 2, Tree Trunk = 3, Leaves = 4, Rock = 5 */
 minecraft.gameMapMatrix = 
 [
@@ -27,7 +45,6 @@ minecraft.gameMapMatrix =
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ];
-
 /** Draw game Map UI + set event listener */
 minecraft.initGameMap = (matrix) => {
   //ref -> game map container
@@ -41,26 +58,7 @@ minecraft.initGameMap = (matrix) => {
         tile.setAttribute('data-matrix-col', col);
         //Set tile UI 
         tile.classList.add('tile');
-        switch(matrix[row][col]) {
-          case 0:
-            tile.classList.add('tile-sky');
-            break;
-          case 1:
-            tile.classList.add('tile-ground');
-            break;
-          case 2:
-            tile.classList.add('tile-grass');
-            break;
-          case 3:
-            tile.classList.add('tile-tree-trunk');
-            break;
-          case 4:
-            tile.classList.add('tile-leaves');
-            break;
-          case 5:
-            tile.classList.add('tile-rock');
-            break;
-        }
+        tile.classList.add(minecraft.getTileCssClassName(matrix[row][col]));
         //Set tiles event listener
         tile.addEventListener('click', (event) => {
           console.log(`MATRIX ROW ${event.currentTarget.dataset.matrixRow} MATRIX COL ${event.currentTarget.dataset.matrixCol}`);
@@ -69,8 +67,10 @@ minecraft.initGameMap = (matrix) => {
         gameMapContainer.appendChild(tile);
     }
   }
-}
+};
 
+
+/** Tools Array */
 minecraft.tools = 
 [
   {
@@ -89,7 +89,6 @@ minecraft.tools =
     className: 'tool-shovel'
   }
 ];
-
 /** Draw Tools UI + set event listener */
 minecraft.initTools = (toolsArray) => {
   
@@ -111,10 +110,10 @@ minecraft.initTools = (toolsArray) => {
     })
     // Append current tile to game map
     toolsContainer.appendChild(toolDiv);
-
-  
   }
-}
+};
+
+
 
 
 
