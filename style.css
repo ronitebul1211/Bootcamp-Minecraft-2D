@@ -6,6 +6,7 @@
   margin: 0;
 }
 
+/* Containers */
 main { 
   height: 100vh;
   display: flex;
@@ -14,11 +15,10 @@ main {
 }
 
 .map-container{
-  height: 100%;
   width: fit-content;
-  margin: auto;
-  display: flex;
+  display: grid;
   grid-template-columns: repeat(20, 1fr); 
+  margin: auto;
 }
 
 .side-menu{
@@ -26,3 +26,21 @@ main {
   height: 100%;
   background: blue;
 }
+
+/* Tiles */
+.tile{
+  width: 30px;
+  height: 30px;
+  background-size: cover;
+  background-image: url('img/grass.png');
+}
+.tile:hover{
+  border: 1px solid black
+}
+.tile-sky{background-image: url('img/sky.png');}
+.tile-ground{background-image: url('img/ground.png');}
+.tile-grass{background-image: url('img/grass.png');}
+.tile-tree-trunk{background-image: url('img/tree_trunk.png');}
+.tile-leaves{background-image: url('img/leaves.png');}
+.tile-rock{background-image: url('img/rock.png');}
+
