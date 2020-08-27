@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+
+    .container {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      width: fit-content;
+      margin: 0 auto;
+    }
+
+    .tile {
+      width: 50px;
+      height: 50px;
+      border: 1px solid black;
+      background: yellow;
+    }
+    .sky{
+      background: teal;
+    }
+    .ground{
+      background: brown
+    }
+    .grass{
+      background: green
+    }
+  </style>
+</head>
+
+
+<body>
+
+<div class="container"></div>
+
+<script>
+
+/* DRAW GAME AREA*/
+let matrix = 
+[
+  [0,0,0,0,0],
+  [2,2,2,2,2],
+  [1,1,1,1,1]
+];
+
+let container = document.querySelector('.container');
+
+
+for(let row = 0; row < matrix.length; row++){
+  for(let col = 0; col < matrix[row].length; col++){
+    
+    let tile = document.createElement('div');
+    tile.setAttribute('data-matrix-row', row);
+    tile.setAttribute('data-matrix-col', col);
+
+    tile.classList.add('tile');
+    
+    switch(matrix[row][col]) {
+      case 0:
+        tile.classList.add('sky');
+        break;
+      case 1:
+        tile.classList.add('ground');
+        break;
+      case 2:
+        tile.classList.add('grass');
+        break;
+    }
+
+    tile.addEventListener('click', (event) => {
+      console.log(`MATRIX ROW ${event.currentTarget.dataset.matrixRow} MATRIX COL ${event.currentTarget.dataset.matrixCol}`);
+    })
+
+    container.appendChild(tile);
+    
+  }
+}
+  
+/* ADD CLICK LISTENER */
+  
+  // let tiles = document.querySelectorAll('.tile');
+
+  // tiles.forEach((tile) => {
+  //   tile.addEventListener('click', (event) => {
+  //     console.log(event.currentTarget);
+
+
+  //   })
+  // })
+
+</script>
+  
+</body>
+</html>
