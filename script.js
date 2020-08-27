@@ -107,21 +107,57 @@ minecraft.initTools = (toolsArray) => {
     //Set tool event listener
      toolDiv.addEventListener('click', (event) => {
       console.log(`tool locate in index ${event.currentTarget.dataset.arrayIndex} in tools array`);
-    })
+    });
+    
     // Append current tile to game map
     toolsContainer.appendChild(toolDiv);
   }
 };
 
 
+/** Tile Inventory: property name represent Tile type, value represent inventory count */
+minecraft.inventory = 
+{
+  1: 0, //Ground
+  2: 0, //Grass
+  3: 0, //Tree Trunk
+  4: 0, //Leaves 
+  5: 0  //Rock
+};
+/** Draw Inventory UI + set event listener */
+minecraft.initInventory = (inventory) => {
+  //ref -> inventory container
+  let inventoryContainer = document.querySelector('.inventory-container');
 
+  for (const [tileType, inventoryCount] of Object.entries(inventory)) {
+    // Create Base inventory item
+    let inventoryItemDiv = document.createElement('div');
+    inventoryItemDiv.setAttribute('data-tile-type', tileType);
+  
+    //Set inventory item UI 
+    inventoryItemDiv.classList.add('tile-inventory');
+    inventoryItemDiv.classList.add(minecraft.getTileCssClassName(parseInt(tileType)));
+    //Set Counter UI
+    let inventoryItemCounterSpan = document.createElement('span');
+    inventoryItemCounterSpan.classList.add('tile-inventory-counter');
+    inventoryItemDiv.appendChild(inventoryItemCounterSpan);
+    //Set Counter data
+    inventoryItemCounterSpan.textContent = inventoryCount;
 
+    //Set inventory item event listener
+    inventoryItemDiv.addEventListener('click', (event) => {
+      console.log(`inventory tile item type ${event.currentTarget.dataset.tileType}`);
+    })
 
-
+     //Append current inventory item to inventory container
+    inventoryContainer.appendChild(inventoryItemDiv);
+  }
+}
 
 
 
 /** Init Game *****************************************************************************************************/
 minecraft.initGameMap(minecraft.gameMapMatrix);
 minecraft.initTools(minecraft.tools);
+minecraft.initInventory(minecraft.inventory);
 

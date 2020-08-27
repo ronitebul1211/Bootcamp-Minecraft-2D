@@ -45,17 +45,42 @@ main {
 .tile-rock{background-image: url('img/rock.png');}
 
 /* Tools */
+.tools-container{
+  padding: 10px 0;
+}
 .tool{
   width: 75px;
   height: 75px;
   margin: 15px auto;
   background-size: cover;
-  cursor: pointer;
 }
 .tool:hover{
-  border: 5px solid black;
+  border: 3px solid black;
   border-radius: 50%;
+  cursor: pointer;
 }
 .tool-axe{background-image: url('img/axe.png');}
 .tool-pickaxe{background-image: url('img/pickaxe.png');}
 .tool-shovel{background-image: url('img/shovel.png');}
+
+/* Inventory */
+.inventory-container{
+  padding: 10px 0;
+}
+.tile-inventory{
+  width: 40px;
+  height: 40px;
+  margin: 15px auto;
+  background-size: cover;
+}
+.tile-inventory:hover{
+  outline: 3px solid black;
+  cursor: pointer;
+}
+.tile-inventory-counter{
+  display: block;
+  padding-top: 5px;
+  padding-left: 5px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 700;
+}
