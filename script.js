@@ -158,7 +158,7 @@ minecraft.gamePanel.tools.init = (toolsArray) => {
     //Set tool event listener
      toolDiv.addEventListener('click', (event) => {
       // console.log(`tool locate in index ${event.currentTarget.dataset.arrayIndex} in tools array`);
-      minecraft.setSideBarItemAsSelected(event.currentTarget);
+      minecraft.gamePanel.setSelectedItemUI(event.currentTarget);
     });
     // Append current tile to game map
     toolsContainer.appendChild(toolDiv);
@@ -197,7 +197,7 @@ minecraft.gamePanel.tilesInventory.init = (inventory) => {
     //Set inventory item event listener
     inventoryItemDiv.addEventListener('click', (event) => {
       // console.log(`inventory tile item type ${event.currentTarget.dataset.tileType}`);
-      minecraft.setSideBarItemAsSelected(event.currentTarget);
+      minecraft.gamePanel.setSelectedItemUI(event.currentTarget);
     });
      //Append current inventory item to inventory container
     inventoryContainer.appendChild(inventoryItemDiv);
@@ -210,12 +210,12 @@ minecraft.gamePanel.tilesInventory.init = (inventory) => {
  * snd set unselected UI to previous selected item
  * @param {object} selectedItem - element object represent tool / inventory tile item
  */
-minecraft.setSideBarItemAsSelected = (selectedItem) => {      
-  //Set previous selected item (if exists) UI to Unselected
-   let previousSelectedItem = document.querySelector('[data-selected="true"]');
-   if (previousSelectedItem !== null){
-     previousSelectedItem.dataset.selected = "false";
-     previousSelectedItem.classList.remove((previousSelectedItem.dataset.itemType === 'tool') ? 'tool-selected' : 'tile-inventory-selected');
+ minecraft.gamePanel.setSelectedItemUI = (selectedItem) => {      
+  //Get previous selected item & Set its UI to Unselected
+   let previousItem = document.querySelector('[data-selected="true"]');
+   if (previousItem !== null){
+    previousItem.dataset.selected = "false";
+    previousItem.classList.remove((previousItem.dataset.itemType === 'tool') ? 'tool-selected' : 'tile-inventory-selected');
    }
    //Set current item UI as SELECTED
    selectedItem.dataset.selected = "true";
