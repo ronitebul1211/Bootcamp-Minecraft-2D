@@ -11,6 +11,8 @@ const minecraft =
   }
 };
 
+
+
 /** DATA: Game Matrix */
 minecraft.gameMap.matrix = 
 [
@@ -123,6 +125,35 @@ minecraft.gameMap.init = (matrix) => {
 };
 
 
+ /**
+ * This function set Selected UI to game panel item when it clicked 
+ * @param {object} selectedItem - Element object 
+ */
+minecraft.gamePanel.setSelectedItemUI = (selectedItem) => {      
+  //Get previous selected item & Set its UI to Unselected
+   let previousItem = document.querySelector('[data-selected="true"]');
+   if (previousItem !== null){
+    previousItem.dataset.selected = "false";
+    previousItem.classList.remove(minecraft.gamePanel.getSelectedCssClassName(previousItem.dataset.itemType));
+   }
+   //Set current selected item UI to Selected
+   selectedItem.dataset.selected = "true";
+   selectedItem.classList.add(minecraft.gamePanel.getSelectedCssClassName(selectedItem.dataset.itemType));
+ }
+/**
+ * @param {string} itemType - game panel item type: Tool / Inventory tile
+ * @return {string} - css class name of selected UI by item type
+ */
+ minecraft.gamePanel.getSelectedCssClassName = (itemType) => {
+    switch(itemType){
+      case 'tool':
+       return 'tool-selected';
+      case 'inventory-tile':
+      return 'tile-inventory-selected'; 
+    }
+ };
+
+
 
 /** DATA: Tools Collection */
 minecraft.gamePanel.tools.collection = 
@@ -205,22 +236,8 @@ minecraft.gamePanel.tilesInventory.init = (inventory) => {
 }
 
 
-/**
- * This function set selected UI to passed element item (tool / inventory tile) 
- * snd set unselected UI to previous selected item
- * @param {object} selectedItem - element object represent tool / inventory tile item
- */
- minecraft.gamePanel.setSelectedItemUI = (selectedItem) => {      
-  //Get previous selected item & Set its UI to Unselected
-   let previousItem = document.querySelector('[data-selected="true"]');
-   if (previousItem !== null){
-    previousItem.dataset.selected = "false";
-    previousItem.classList.remove((previousItem.dataset.itemType === 'tool') ? 'tool-selected' : 'tile-inventory-selected');
-   }
-   //Set current item UI as SELECTED
-   selectedItem.dataset.selected = "true";
-   selectedItem.classList.add((selectedItem.dataset.itemType === 'tool') ? 'tool-selected' : 'tile-inventory-selected');
- }
+
+
 
 
 /** Current player action - HARDCODED */
