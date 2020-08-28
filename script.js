@@ -104,7 +104,8 @@ minecraft.initTools = (toolsArray) => {
     toolDiv.classList.add(toolsArray[i].className);
     //Set tool event listener
      toolDiv.addEventListener('click', (event) => {
-      console.log(`tool locate in index ${event.currentTarget.dataset.arrayIndex} in tools array`);
+      // console.log(`tool locate in index ${event.currentTarget.dataset.arrayIndex} in tools array`);
+      minecraft.setSideBarItemAsSelected(event.currentTarget);
     });
     // Append current tile to game map
     toolsContainer.appendChild(toolDiv);
@@ -141,12 +142,30 @@ minecraft.initInventory = (inventory) => {
     inventoryItemCounterSpan.textContent = inventoryCount;
     //Set inventory item event listener
     inventoryItemDiv.addEventListener('click', (event) => {
-      console.log(`inventory tile item type ${event.currentTarget.dataset.tileType}`);
+      // console.log(`inventory tile item type ${event.currentTarget.dataset.tileType}`);
+      minecraft.setSideBarItemAsSelected(event.currentTarget);
     });
      //Append current inventory item to inventory container
     inventoryContainer.appendChild(inventoryItemDiv);
   }
 }
+
+/**
+ * This function set selected UI to passed element item (tool / inventory tile) 
+ * snd set unselected UI to previous selected item
+ * @param {object} selectedItem - element object represent tool / inventory tile item
+ */
+minecraft.setSideBarItemAsSelected = (selectedItem) => {      
+  //Set previous selected item (if exists) UI to Unselected
+   let previousSelectedItem = document.querySelector('[data-selected="true"]');
+   if (previousSelectedItem !== null){
+     previousSelectedItem.dataset.selected = "false";
+     previousSelectedItem.classList.remove((previousSelectedItem.dataset.itemType === 'tool') ? 'tool-selected' : 'tile-inventory-selected');
+   }
+   //Set current item UI as SELECTED
+   selectedItem.dataset.selected = "true";
+   selectedItem.classList.add((selectedItem.dataset.itemType === 'tool') ? 'tool-selected' : 'tile-inventory-selected');
+ }
 
 
 
