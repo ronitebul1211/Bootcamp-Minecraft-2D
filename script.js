@@ -3,15 +3,13 @@
 /**Game Object */
 const minecraft = 
 {
-  gameMap: {}
+  gameMap: {},
+  gamePanel: 
+  {
+    tools: {}
+  }
 };
 
-/** Current player action - HARDCODED */
-minecraft.action = 
-{
-  name: 'remove',
-  preformOnTileType: [1,2]
-}
 
 /** @param {number} tileType - represent tile type e.g: 1
   * @returns {string} css class name - e.g: tile-sky */
@@ -125,16 +123,8 @@ minecraft.gameMap.init = (matrix) => {
 
 
 
-
-console.log(minecraft);
-
-
-
-
-
-
 /** Tools Array */
-minecraft.tools = 
+minecraft.gamePanel.tools.collection = 
 [
   {
     name: 'axe',
@@ -152,9 +142,8 @@ minecraft.tools =
     cssClassName: 'tool-shovel'
   }
 ];
-
 /** Draw Tools UI + set event listener */
-minecraft.initTools = (toolsArray) => {
+minecraft.gamePanel.tools.init = (toolsArray) => {
   const toolsContainer = document.querySelector('.tools-container');
   // create for each tool object tool UI
   for(let i = 0; i < toolsArray.length; i++){
@@ -213,6 +202,7 @@ minecraft.initInventory = (inventory) => {
   }
 }
 
+
 /**
  * This function set selected UI to passed element item (tool / inventory tile) 
  * snd set unselected UI to previous selected item
@@ -231,14 +221,18 @@ minecraft.setSideBarItemAsSelected = (selectedItem) => {
  }
 
 
-
+/** Current player action - HARDCODED */
+minecraft.action = 
+{
+  name: 'remove',
+  preformOnTileType: [1,2]
+}
 
 
 /** Init Game *****************************************************************************************************/
 minecraft.gameMap.init(minecraft.gameMap.matrix);
+minecraft.gamePanel.tools.init(minecraft.gamePanel.tools.collection);
 
 
-
-minecraft.initTools(minecraft.tools);
 minecraft.initInventory(minecraft.inventory);
 
