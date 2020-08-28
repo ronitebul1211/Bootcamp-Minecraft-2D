@@ -6,30 +6,12 @@ const minecraft =
   gameMap: {},
   gamePanel: 
   {
-    tools: {}
+    tools: {},
+    tilesInventory: {}
   }
 };
 
-
-/** @param {number} tileType - represent tile type e.g: 1
-  * @returns {string} css class name - e.g: tile-sky */
- minecraft.gameMap.getTileCssClassName = (tileType) => {
-  switch(parseInt(tileType)) {
-    case 0:
-       return 'tile-sky';
-    case 1:
-      return 'tile-ground'; 
-    case 2:
-     return 'tile-grass';
-    case 3:
-      return 'tile-tree-trunk';
-    case 4:
-      return 'tile-leaves';
-    case 5:
-      return 'tile-rock'; 
-  } 
-};
-/** Game Map: Sky = 0, Ground = 1, Grass = 2, Tree Trunk = 3, Leaves = 4, Rock = 5 */
+/** DATA: Game Matrix */
 minecraft.gameMap.matrix = 
 [
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -53,7 +35,7 @@ minecraft.gameMap.matrix =
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ];
-/** Draw game Map UI + set event listener */
+/** SET: Game Map UI + Event Listener */
 minecraft.gameMap.init = (matrix) => {
   //ref -> game map container
   let gameMapContainer = document.querySelector('.map-container');
@@ -90,14 +72,15 @@ minecraft.gameMap.init = (matrix) => {
              selectedTile.classList.remove(minecraft.gameMap.getTileCssClassName(matrix[matrixRow][matrixCol]));
               
              //2. update inventory object -> add tile TYPE TO INVENTORY (object should update ui?)
-              minecraft.inventory[matrix[matrixRow][matrixCol]] += 1; 
+             minecraft.gamePanel.tilesInventory.collection
+             [matrix[matrixRow][matrixCol]] += 1; 
 
               //3. Update inventory ui
               // Get div contain the current tile type 
               let inventoryOfCurrentTile = document.querySelector(`[data-inventory-tile-type="${matrix[matrixRow][matrixCol]}"]`);
               let inventoryOfCurrentTileCounter = inventoryOfCurrentTile.querySelector('.tile-inventory-counter');
               // update counter ui with object data -> 
-              inventoryOfCurrentTileCounter.textContent = minecraft.inventory[matrix[matrixRow][matrixCol]];
+              inventoryOfCurrentTileCounter.textContent = minecraft.gamePanel.tilesInventory.collection[matrix[matrixRow][matrixCol]];
              
              //2. update value to 0 in matrix
               matrix[matrixRow][matrixCol] = 0;
@@ -120,10 +103,28 @@ minecraft.gameMap.init = (matrix) => {
     }
   }
 };
+/** @param {number} tileType - represent tile type e.g: 1
+  * @returns {string} css class name - e.g: tile-sky */
+ minecraft.gameMap.getTileCssClassName = (tileType) => {
+  switch(parseInt(tileType)) {
+    case 0:
+       return 'tile-sky';
+    case 1:
+      return 'tile-ground'; 
+    case 2:
+     return 'tile-grass';
+    case 3:
+      return 'tile-tree-trunk';
+    case 4:
+      return 'tile-leaves';
+    case 5:
+      return 'tile-rock'; 
+  } 
+};
 
 
 
-/** Tools Array */
+/** DATA: Tools Collection */
 minecraft.gamePanel.tools.collection = 
 [
   {
@@ -142,7 +143,7 @@ minecraft.gamePanel.tools.collection =
     cssClassName: 'tool-shovel'
   }
 ];
-/** Draw Tools UI + set event listener */
+/** SET: Tools Panel UI + Event Listener */
 minecraft.gamePanel.tools.init = (toolsArray) => {
   const toolsContainer = document.querySelector('.tools-container');
   // create for each tool object tool UI
@@ -165,8 +166,9 @@ minecraft.gamePanel.tools.init = (toolsArray) => {
 };
 
 
-/** Tile Inventory: property name represent Tile type, value represent inventory count */
-minecraft.inventory = 
+
+/** DATA: Tile Inventory - Property = Tile type, Value = Inventory Count */
+minecraft.gamePanel.tilesInventory.collection = 
 {
   1: 0, //Ground
   2: 0, //Grass
@@ -174,8 +176,8 @@ minecraft.inventory =
   4: 0, //Leaves 
   5: 0  //Rock
 };
-/** Draw Inventory UI + set event listener */
-minecraft.initInventory = (inventory) => {
+/** SET: Inventory Panel UI + Event Listener */
+minecraft.gamePanel.tilesInventory.init = (inventory) => {
   const inventoryContainer = document.querySelector('.inventory-container');
   //Create for each inventory item in inventory object UI
   for (const [tileType, inventoryCount] of Object.entries(inventory)) {
@@ -232,7 +234,5 @@ minecraft.action =
 /** Init Game *****************************************************************************************************/
 minecraft.gameMap.init(minecraft.gameMap.matrix);
 minecraft.gamePanel.tools.init(minecraft.gamePanel.tools.collection);
-
-
-minecraft.initInventory(minecraft.inventory);
+minecraft.gamePanel.tilesInventory.init(minecraft.gamePanel.tilesInventory.collection);
 
