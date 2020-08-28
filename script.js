@@ -1,7 +1,10 @@
 'use-strict'
 
 /**Game Object */
-const minecraft = {};
+const minecraft = 
+{
+  gameMap: {}
+};
 
 /** Current player action - HARDCODED */
 minecraft.action = 
@@ -12,7 +15,7 @@ minecraft.action =
 
 /** @param {number} tileType - represent tile type e.g: 1
   * @returns {string} css class name - e.g: tile-sky */
-minecraft.getTileCssClassName = (tileType) => {
+ minecraft.gameMap.getTileCssClassName = (tileType) => {
   switch(parseInt(tileType)) {
     case 0:
        return 'tile-sky';
@@ -29,7 +32,7 @@ minecraft.getTileCssClassName = (tileType) => {
   } 
 };
 /** Game Map: Sky = 0, Ground = 1, Grass = 2, Tree Trunk = 3, Leaves = 4, Rock = 5 */
-minecraft.gameMapMatrix = 
+minecraft.gameMap.matrix = 
 [
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -53,7 +56,7 @@ minecraft.gameMapMatrix =
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ];
 /** Draw game Map UI + set event listener */
-minecraft.initGameMap = (matrix) => {
+minecraft.gameMap.init = (matrix) => {
   //ref -> game map container
   let gameMapContainer = document.querySelector('.map-container');
   //Game map matrix iteration
@@ -65,7 +68,7 @@ minecraft.initGameMap = (matrix) => {
         tile.setAttribute('data-matrix-col', col);
         //Set tile UI 
         tile.classList.add('tile');
-        tile.classList.add(minecraft.getTileCssClassName(matrix[row][col]));
+        tile.classList.add(minecraft.gameMap.getTileCssClassName(matrix[row][col]));
         //Set tiles event listener
         tile.addEventListener('click', (event) => {
 
@@ -86,7 +89,7 @@ minecraft.initGameMap = (matrix) => {
           // CAN REMOVE
           if (isRemovable){
              //1. update tile ui -> remove current class
-             selectedTile.classList.remove(minecraft.getTileCssClassName(matrix[matrixRow][matrixCol]));
+             selectedTile.classList.remove(minecraft.gameMap.getTileCssClassName(matrix[matrixRow][matrixCol]));
               
              //2. update inventory object -> add tile TYPE TO INVENTORY (object should update ui?)
               minecraft.inventory[matrix[matrixRow][matrixCol]] += 1; 
@@ -102,7 +105,7 @@ minecraft.initGameMap = (matrix) => {
               matrix[matrixRow][matrixCol] = 0;
               
               //3. update ui -> ADD  class SKY
-              selectedTile.classList.add(minecraft.getTileCssClassName(matrix[matrixRow][matrixCol]));
+              selectedTile.classList.add(minecraft.gameMap.getTileCssClassName(matrix[matrixRow][matrixCol]));
               
 
           }
@@ -119,6 +122,15 @@ minecraft.initGameMap = (matrix) => {
     }
   }
 };
+
+
+
+
+console.log(minecraft);
+
+
+
+
 
 
 /** Tools Array */
@@ -184,7 +196,7 @@ minecraft.initInventory = (inventory) => {
     inventoryItemDiv.setAttribute('data-inventory-tile-type', tileType);
     //Set inventory item UI 
     inventoryItemDiv.classList.add('tile-inventory');
-    inventoryItemDiv.classList.add(minecraft.getTileCssClassName(tileType));
+    inventoryItemDiv.classList.add(minecraft.gameMap.getTileCssClassName(tileType));
     //Set Counter UI
     let inventoryItemCounterSpan = document.createElement('span');
     inventoryItemCounterSpan.classList.add('tile-inventory-counter');
@@ -223,7 +235,10 @@ minecraft.setSideBarItemAsSelected = (selectedItem) => {
 
 
 /** Init Game *****************************************************************************************************/
-minecraft.initGameMap(minecraft.gameMapMatrix);
+minecraft.gameMap.init(minecraft.gameMap.matrix);
+
+
+
 minecraft.initTools(minecraft.tools);
 minecraft.initInventory(minecraft.inventory);
 
