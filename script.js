@@ -59,12 +59,22 @@ minecraft.gameMap.init = (matrix) => {
         //Set tiles event listener
         tile.addEventListener('click', (event) => {
 
-           //get selected tile 
+           //get selected tile & index in matrix 
            let selectedTile = event.currentTarget;
-           //get location in matrix
            let matrixRow = selectedTile.dataset.matrixRow;
            let matrixCol = selectedTile.dataset.matrixCol;
 
+           switch(minecraft.playMode.currentAction){
+            case 'removeTile':
+              console.log('call removeTile function');
+              break;
+            case 'addTile':
+              console.log('call addTile function');
+              break;
+            case '':
+              console.log('player did not take an action');
+              break;
+           }
           
           //Remove action /////////////////////////////////////
 
@@ -72,7 +82,7 @@ minecraft.gameMap.init = (matrix) => {
          
          
           // get tile type current tool work with
-          let preformOnTilesType = minecraft.action.preformOnTileType; // array [3,4] Tree Trunk = 3, Leaves = 4
+          let preformOnTilesType = minecraft.playMode.actOnTileType; // array [3,4] Tree Trunk = 3, Leaves = 4
           // checks if current tile is Removable
           const isRemovable = preformOnTilesType.some((tileType) => tileType === matrix[matrixRow][matrixCol]);
 
@@ -249,7 +259,7 @@ minecraft.gamePanel.tilesInventory.init = (inventory) => {
 
 
 /** TEST: remove action */
-minecraft.playMode.currentAction = 'remove';
+minecraft.playMode.currentAction = 'removeTile';
 minecraft.playMode.actOnTileType = [1,2];
 
 console.log(minecraft);
