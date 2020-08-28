@@ -89,32 +89,27 @@ minecraft.tools =
     className: 'tool-shovel'
   }
 ];
+
 /** Draw Tools UI + set event listener */
 minecraft.initTools = (toolsArray) => {
-  
-  let toolsContainer = document.querySelector('.tools-container');
- 
+  const toolsContainer = document.querySelector('.tools-container');
+  // create for each tool object tool UI
   for(let i = 0; i < toolsArray.length; i++){
-    
     // Create Base tool
-    let toolDiv = document.createElement('div');
-    toolDiv.setAttribute('data-array-index', i);
-    
+    const toolDiv = document.createElement('div');
+    toolDiv.setAttribute('data-item-type', 'tool');
+    toolDiv.setAttribute('data-tools-array-index', i);
     //Set tool UI 
     toolDiv.classList.add('tool');
     toolDiv.classList.add(toolsArray[i].className);
-    
     //Set tool event listener
      toolDiv.addEventListener('click', (event) => {
       console.log(`tool locate in index ${event.currentTarget.dataset.arrayIndex} in tools array`);
-      
     });
-
     // Append current tile to game map
     toolsContainer.appendChild(toolDiv);
   }
 };
-minecraft.onToolClick
 
 
 /** Tile Inventory: property name represent Tile type, value represent inventory count */
@@ -128,14 +123,13 @@ minecraft.inventory =
 };
 /** Draw Inventory UI + set event listener */
 minecraft.initInventory = (inventory) => {
-  //ref -> inventory container
-  let inventoryContainer = document.querySelector('.inventory-container');
-
+  const inventoryContainer = document.querySelector('.inventory-container');
+  //Create for each inventory item in inventory object UI
   for (const [tileType, inventoryCount] of Object.entries(inventory)) {
     // Create Base inventory item
     let inventoryItemDiv = document.createElement('div');
+    inventoryItemDiv.setAttribute('data-item-type', 'inventory-tile');
     inventoryItemDiv.setAttribute('data-tile-type', tileType);
-  
     //Set inventory item UI 
     inventoryItemDiv.classList.add('tile-inventory');
     inventoryItemDiv.classList.add(minecraft.getTileCssClassName(parseInt(tileType)));
@@ -145,22 +139,16 @@ minecraft.initInventory = (inventory) => {
     inventoryItemDiv.appendChild(inventoryItemCounterSpan);
     //Set Counter data
     inventoryItemCounterSpan.textContent = inventoryCount;
-
     //Set inventory item event listener
     inventoryItemDiv.addEventListener('click', (event) => {
       console.log(`inventory tile item type ${event.currentTarget.dataset.tileType}`);
-    })
-
+    });
      //Append current inventory item to inventory container
     inventoryContainer.appendChild(inventoryItemDiv);
   }
 }
 
-minecraft.playMode = 
-{
-  action: 'remove',
-  tileType: [1]
-}
+
 
 
 
@@ -169,3 +157,8 @@ minecraft.initGameMap(minecraft.gameMapMatrix);
 minecraft.initTools(minecraft.tools);
 minecraft.initInventory(minecraft.inventory);
 
+minecraft.playMode = 
+{
+  action: 'remove',
+  tileType: [1]
+}
