@@ -54,7 +54,8 @@ main {
   margin: 15px auto;
   background-size: cover;
 }
-.tool:hover{
+.tool:hover,
+.tool-selected{
   border: 3px solid black;
   border-radius: 50%;
   cursor: pointer;
@@ -73,7 +74,8 @@ main {
   margin: 15px auto;
   background-size: cover;
 }
-.tile-inventory:hover{
+.tile-inventory:hover,
+.tile-inventory-selected{
   outline: 3px solid black;
   cursor: pointer;
 }
