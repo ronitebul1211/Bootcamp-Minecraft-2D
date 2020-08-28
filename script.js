@@ -8,6 +8,11 @@ const minecraft =
   {
     tools: {},
     tilesInventory: {}
+  },
+  playMode: 
+  {
+    currentAction: '',
+    actOnTileType: []
   }
 };
 
@@ -54,13 +59,16 @@ minecraft.gameMap.init = (matrix) => {
         //Set tiles event listener
         tile.addEventListener('click', (event) => {
 
+           //get selected tile 
+           let selectedTile = event.currentTarget;
+           //get location in matrix
+           let matrixRow = selectedTile.dataset.matrixRow;
+           let matrixCol = selectedTile.dataset.matrixCol;
+
+          
           //Remove action /////////////////////////////////////
 
-          //get selected tile 
-          let selectedTile = event.currentTarget;
-          //get location in matrix
-          let matrixRow = selectedTile.dataset.matrixRow;
-          let matrixCol = selectedTile.dataset.matrixCol;
+         
          
          
           // get tile type current tool work with
@@ -240,14 +248,11 @@ minecraft.gamePanel.tilesInventory.init = (inventory) => {
 
 
 
-/** Current player action - HARDCODED */
-minecraft.action = 
-{
-  name: 'remove',
-  preformOnTileType: [1,2]
-}
+/** TEST: remove action */
+minecraft.playMode.currentAction = 'remove';
+minecraft.playMode.actOnTileType = [1,2];
 
-
+console.log(minecraft);
 /** Init Game *****************************************************************************************************/
 minecraft.gameMap.init(minecraft.gameMap.matrix);
 minecraft.gamePanel.tools.init(minecraft.gamePanel.tools.collection);
