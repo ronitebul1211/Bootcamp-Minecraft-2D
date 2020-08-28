@@ -107,12 +107,14 @@ minecraft.initTools = (toolsArray) => {
     //Set tool event listener
      toolDiv.addEventListener('click', (event) => {
       console.log(`tool locate in index ${event.currentTarget.dataset.arrayIndex} in tools array`);
+      
     });
-    
+
     // Append current tile to game map
     toolsContainer.appendChild(toolDiv);
   }
 };
+minecraft.onToolClick
 
 
 /** Tile Inventory: property name represent Tile type, value represent inventory count */
@@ -152,6 +154,12 @@ minecraft.initInventory = (inventory) => {
      //Append current inventory item to inventory container
     inventoryContainer.appendChild(inventoryItemDiv);
   }
+}
+
+minecraft.playMode = 
+{
+  action: 'remove',
+  tileType: [1]
 }
 
 

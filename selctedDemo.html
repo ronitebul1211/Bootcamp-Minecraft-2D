@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="selctedDemo.css">
+</head>
+<body>
+  <div class="side-menu">
+    <div class="tools-container">
+      <div data-item-type="tool"  data-array-index="0" class="tool tool-axe"></div>
+      <div  data-item-type="tool" data-array-index="1" class="tool tool-pickaxe"></div>
+      <div  data-item-type="tool"  data-array-index="2" class="tool tool-shovel"></div>
+      </div>
+    <div class="inventory-container">
+      <div  data-item-type="inventory-tile"  data-tile-type="1" class="tile-inventory tile-ground"><span class="tile-inventory-counter">0</span></div>
+      <div  data-item-type="inventory-tile" data-tile-type="2" class="tile-inventory tile-grass"><span class="tile-inventory-counter">0</span></div>
+      <div  data-item-type="inventory-tile" data-tile-type="3" class="tile-inventory tile-tree-trunk"><span class="tile-inventory-counter">0</span></div>
+      <div  data-item-type="inventory-tile" data-tile-type="4" class="tile-inventory tile-leaves"><span class="tile-inventory-counter">0</span></div>
+      <div data-item-type="inventory-tile"  data-tile-type="5" class="tile-inventory tile-rock"><span class="tile-inventory-counter">0</span></div>
+    </div>
+  </div>
+
+
+  <script>
+    
+    //test
+    let tools = document.querySelectorAll('.tool');
+    tools.forEach((tool) => {
+      tool.addEventListener('click', (event) => {
+
+        setSideBarItemAsSelected(event.currentTarget);
+        
+      });
+    });
+    //test
+    let inventory = document.querySelectorAll('.tile-inventory');
+    inventory.forEach((tile) => {
+      tile.addEventListener('click', (event) => {
+        
+       setSideBarItemAsSelected(event.currentTarget);
+      
+        
+      });
+    });
+
+    /*
+      To implement:
+      1. add data-item-type attribute to each tool  [data-item-type="tool"] and inventory tile [data-item-type="inventory-tile"]
+      2. call from event listener of tool item / inventory-tile item
+    */ 
+
+    const setSideBarItemAsSelected = (selectedItem) => {      
+     //Set previous selected item (if exists) UI to Unselected
+      let previousSelectedItem = document.querySelector('[data-selected="true"]');
+      if (previousSelectedItem !== null){
+        previousSelectedItem.dataset.selected = "false";
+        previousSelectedItem.classList.remove((previousSelectedItem.dataset.itemType === 'tool') ? 'tool-selected' : 'tile-inventory-selected');
+      }
+      //Set current item UI as SELECTED
+      selectedItem.dataset.selected = "true";
+      selectedItem.classList.add((selectedItem.dataset.itemType === 'tool') ? 'tool-selected' : 'tile-inventory-selected');
+    }
+
+  </script>
+</body>
+</html>

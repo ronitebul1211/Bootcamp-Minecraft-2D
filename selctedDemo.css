@@ -1,0 +1,93 @@
+*,
+*::before,
+*::after
+{
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+/* Containers */
+main { 
+  height: 100vh;
+  display: flex;
+  justify-content: space-between;
+  background: pink;
+}
+
+.map-container{
+  display: grid;
+  grid-template-columns: repeat(20, 1fr); 
+  margin: auto;
+}
+
+.side-menu{
+  width: 150px;
+  height: 100%;
+  background: cornsilk;
+}
+
+/* Tiles */
+.tile{
+  width: 30px;
+  height: 30px;
+  background-size: cover;
+}
+.tile:hover{
+  border: 2px dotted black;
+  cursor: pointer;
+}
+.tile-sky{background-image: url('img/sky.png');}
+.tile-ground{background-image: url('img/ground.png');}
+.tile-grass{background-image: url('img/grass.png');}
+.tile-tree-trunk{background-image: url('img/tree_trunk.png');}
+.tile-leaves{background-image: url('img/leaves.png');}
+.tile-rock{background-image: url('img/rock.png');}
+
+/* Tools */
+.tools-container{
+  padding: 10px 0;
+}
+.tool{
+  width: 75px;
+  height: 75px;
+  margin: 15px auto;
+  background-size: cover;
+}
+.tool:hover{
+  border: 3px solid black;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.tool-selected{/***************************************************************/
+  border: 3px solid black;
+  border-radius: 50%;
+}
+.tool-axe{background-image: url('img/axe.png');}
+.tool-pickaxe{background-image: url('img/pickaxe.png');}
+.tool-shovel{background-image: url('img/shovel.png');}
+
+/* Inventory */
+.inventory-container{
+  padding: 10px 0;
+}
+.tile-inventory{
+  width: 40px;
+  height: 40px;
+  margin: 15px auto;
+  background-size: cover;
+}
+.tile-inventory:hover{
+  border: 3px solid black;
+  cursor: pointer;
+}
+.tile-inventory-selected{/***************************************************************/
+  border: 3px solid black;
+}
+.tile-inventory-counter{
+  display: block;
+  padding-top: 5px;
+  padding-left: 5px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 700;
+}
