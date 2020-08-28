@@ -37,12 +37,12 @@ main {
   border: 2px dotted black;
   cursor: pointer;
 }
-.tile-sky{background-image: url('img/sky.png');}
-.tile-ground{background-image: url('img/ground.png');}
-.tile-grass{background-image: url('img/grass.png');}
-.tile-tree-trunk{background-image: url('img/tree_trunk.png');}
-.tile-leaves{background-image: url('img/leaves.png');}
-.tile-rock{background-image: url('img/rock.png');}
+.tile-sky{background-image: url('../img/sky.png');}
+.tile-ground{background-image: url('../img/ground.png');}
+.tile-grass{background-image: url('../img/grass.png');}
+.tile-tree-trunk{background-image: url('../img/tree_trunk.png');}
+.tile-leaves{background-image: url('../img/leaves.png');}
+.tile-rock{background-image: url('../img/rock.png');}
 
 /* Tools */
 .tools-container{
@@ -63,9 +63,9 @@ main {
   border: 3px solid black;
   border-radius: 50%;
 }
-.tool-axe{background-image: url('img/axe.png');}
-.tool-pickaxe{background-image: url('img/pickaxe.png');}
-.tool-shovel{background-image: url('img/shovel.png');}
+.tool-axe{background-image: url('../img/axe.png');}
+.tool-pickaxe{background-image: url('../img/pickaxe.png');}
+.tool-shovel{background-image: url('../img/shovel.png');}
 
 /* Inventory */
 .inventory-container{
