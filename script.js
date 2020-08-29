@@ -117,7 +117,7 @@ minecraft.gameMap.setTileTypeInMatrix = (selectedTile, tileType) => {
  * This function set Selected UI to game panel item when it clicked 
  * @param {object} selectedItem - Element object 
  */
-minecraft.gamePanel.setSelectedItemUI = (selectedItem) => {      
+minecraft.gamePanel.setSelectedItemUI = (selectedItem) => {     
   //Get previous selected item & Set its UI to Unselected
    let previousItem = document.querySelector('[data-selected="true"]');
    if (previousItem !== null){
@@ -313,3 +313,4 @@ minecraft.gameMap.init(minecraft.gameMap.matrix);
 minecraft.gamePanel.tools.init(minecraft.gamePanel.tools.collection);
 minecraft.gamePanel.tilesInventory.init(minecraft.gamePanel.tilesInventory.items);
 
+console.log(minecraft);

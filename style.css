@@ -25,6 +25,7 @@ main {
   width: 150px;
   height: 100%;
   background: cornsilk;
+  padding: 20px 0;
 }
 
 /* Tiles */
@@ -45,12 +46,9 @@ main {
 .tile-rock{background-image: url('img/rock.png');}
 
 /* Tools */
-.tools-container{
-  padding: 10px 0;
-}
 .tool{
-  width: 75px;
-  height: 75px;
+  width: 60px;
+  height: 60px;
   margin: 15px auto;
   background-size: cover;
 }
@@ -89,4 +87,16 @@ main {
 .game-panel-incompatible-selection {
   border-color: red;
   outline-color: red;
+}
+.reset-btn{
+  margin: 0 auto;
+  display: block;
+  cursor: pointer;
+  padding: 5px 10px;
+  background: pink;
+  border: 0;
+  outline: 0;
+}
+.reset-btn:hover{
+  outline: 3px solid black;
 }
