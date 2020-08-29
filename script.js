@@ -140,6 +140,14 @@ minecraft.gamePanel.setSelectedItemUI = (selectedItem) => {
       return 'tile-inventory-selected'; 
     }
  };
+ /** FUN: Incompatible select animation */
+minecraft.gamePanel.setIncompatibleSelectAnimation = () => {
+  const selectedTool = document.querySelector('[data-selected="true"]');
+  selectedTool.classList.add('game-panel-incompatible-selection');
+    setTimeout(() => {
+      selectedTool.classList.remove('game-panel-incompatible-selection');
+    }, 1500);
+};
 
 
 
@@ -185,6 +193,8 @@ minecraft.gamePanel.tools.init = (toolsArray) => {
     toolsContainer.appendChild(toolDiv);
   }
 };
+
+
 
 
 
@@ -268,11 +278,9 @@ minecraft.playMode.removeTile = (selectedTile) => {
     //** update ui -> ADD  class SKY
    selectedTile.classList.add(minecraft.gameMap.getTileCssClassName(minecraft.gameMap.getTileTypeInMatrix(selectedTile))); 
   } else {
-    console.log('animation in selected tool: border red ');
+    minecraft.gamePanel.setIncompatibleSelectAnimation();
   }
 };
-
-
 /** FUN: add selected tile */
 minecraft.playMode.addTile = (selectedTileElement) => {
   const tileTypeToAdd = parseInt(minecraft.playMode.currentAction.tileType)
@@ -294,6 +302,7 @@ minecraft.playMode.addTile = (selectedTileElement) => {
     }
   } else {
     console.log('There is no inventory for this tile');
+    minecraft.gamePanel.setIncompatibleSelectAnimation();
   }
 };
 
