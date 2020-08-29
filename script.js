@@ -11,8 +11,11 @@ const minecraft =
   },
   playMode: 
   {
-    currentAction: '',
-    actOnTileType: []
+    currentAction: 
+    {
+      name: '',
+      actOnTileType: []
+    }
   }
 };
 
@@ -58,15 +61,10 @@ minecraft.gameMap.init = (matrix) => {
         tile.classList.add(minecraft.gameMap.getTileCssClassName(matrix[row][col]));
         //Set tiles event listener
         tile.addEventListener('click', (event) => {
-
-           //get selected tile & index in matrix 
-           let selectedTile = event.currentTarget;
-           let matrixRow = selectedTile.dataset.matrixRow;
-           let matrixCol = selectedTile.dataset.matrixCol;
-
-           switch(minecraft.playMode.currentAction){
+          const selectedTile = event.currentTarget;
+           switch(minecraft.playMode.currentAction.name){
             case 'removeTile':
-              console.log('call removeTile function');
+              minecraft.playMode.removeTile(selectedTile);
               break;
             case 'addTile':
               console.log('call addTile function');
@@ -75,48 +73,6 @@ minecraft.gameMap.init = (matrix) => {
               console.log('player did not take an action');
               break;
            }
-          
-          //Remove action /////////////////////////////////////
-
-         
-         
-         
-          // get tile type current tool work with
-          let preformOnTilesType = minecraft.playMode.actOnTileType; // array [3,4] Tree Trunk = 3, Leaves = 4
-          // checks if current tile is Removable
-          const isRemovable = preformOnTilesType.some((tileType) => tileType === matrix[matrixRow][matrixCol]);
-
-          // CAN REMOVE
-          if (isRemovable){
-             //1. update tile ui -> remove current class
-             selectedTile.classList.remove(minecraft.gameMap.getTileCssClassName(matrix[matrixRow][matrixCol]));
-              
-             //2. update inventory object -> add tile TYPE TO INVENTORY (object should update ui?)
-             minecraft.gamePanel.tilesInventory.collection
-             [matrix[matrixRow][matrixCol]] += 1; 
-
-              //3. Update inventory ui
-              // Get div contain the current tile type 
-              let inventoryOfCurrentTile = document.querySelector(`[data-inventory-tile-type="${matrix[matrixRow][matrixCol]}"]`);
-              let inventoryOfCurrentTileCounter = inventoryOfCurrentTile.querySelector('.tile-inventory-counter');
-              // update counter ui with object data -> 
-              inventoryOfCurrentTileCounter.textContent = minecraft.gamePanel.tilesInventory.collection[matrix[matrixRow][matrixCol]];
-             
-             //2. update value to 0 in matrix
-              matrix[matrixRow][matrixCol] = 0;
-              
-              //3. update ui -> ADD  class SKY
-              selectedTile.classList.add(minecraft.gameMap.getTileCssClassName(matrix[matrixRow][matrixCol]));
-              
-
-          }
-          else {
-            console.log('cant remove animation on tool');
-          }
-
-  
-      
-
         });
         // Append current tile to game map
         gameMapContainer.appendChild(tile);
@@ -141,6 +97,20 @@ minecraft.gameMap.init = (matrix) => {
       return 'tile-rock'; 
   } 
 };
+/** FUN: Get tile type in matrix */
+minecraft.gameMap.getTileTypeInMatrix = (selectedTile) => {
+  const matrix = minecraft.gameMap.matrix;
+  const rowIndex = selectedTile.dataset.matrixRow; 
+  const colIndex = selectedTile.dataset.matrixCol;
+  return matrix[rowIndex][colIndex];
+}
+/** FUN: Set tile type in matrix */
+minecraft.gameMap.setTileTypeInMatrix = (selectedTile, tileType) => {
+  const matrix = minecraft.gameMap.matrix;
+  const rowIndex = selectedTile.dataset.matrixRow; 
+  const colIndex = selectedTile.dataset.matrixCol;
+  matrix[rowIndex][colIndex] = tileType;
+}
 
 
  /**
@@ -200,14 +170,16 @@ minecraft.gamePanel.tools.init = (toolsArray) => {
     // Create Base tool
     const toolDiv = document.createElement('div');
     toolDiv.setAttribute('data-item-type', 'tool');
-    toolDiv.setAttribute('data-tools-array-index', i);
+    toolDiv.setAttribute('data-tool-index', i);
     //Set tool UI 
     toolDiv.classList.add('tool');
     toolDiv.classList.add(toolsArray[i].cssClassName);
     //Set tool event listener
      toolDiv.addEventListener('click', (event) => {
-      // console.log(`tool locate in index ${event.currentTarget.dataset.arrayIndex} in tools array`);
-      minecraft.gamePanel.setSelectedItemUI(event.currentTarget);
+      const toolElement = event.currentTarget; // Get current tool element
+      minecraft.gamePanel.setSelectedItemUI(toolElement); //Set selected UI to current tool element
+      toolData = minecraft.gamePanel.tools.collection[toolElement.dataset.toolIndex]; //Get current tool object
+      minecraft.playMode.setCurrentAction('removeTile', toolData.removeTileType); // set play mode action
     });
     // Append current tile to game map
     toolsContainer.appendChild(toolDiv);
@@ -217,7 +189,7 @@ minecraft.gamePanel.tools.init = (toolsArray) => {
 
 
 /** DATA: Tile Inventory - Property = Tile type, Value = Inventory Count */
-minecraft.gamePanel.tilesInventory.collection = 
+minecraft.gamePanel.tilesInventory.items = 
 {
   1: 0, //Ground
   2: 0, //Grass
@@ -233,7 +205,7 @@ minecraft.gamePanel.tilesInventory.init = (inventory) => {
     // Create Base inventory item
     let inventoryItemDiv = document.createElement('div');
     inventoryItemDiv.setAttribute('data-item-type', 'inventory-tile');
-    inventoryItemDiv.setAttribute('data-inventory-tile-type', tileType);
+    inventoryItemDiv.setAttribute('data-tile-type', tileType);
     //Set inventory item UI 
     inventoryItemDiv.classList.add('tile-inventory');
     inventoryItemDiv.classList.add(minecraft.gameMap.getTileCssClassName(tileType));
@@ -246,25 +218,71 @@ minecraft.gamePanel.tilesInventory.init = (inventory) => {
     //Set inventory item event listener
     inventoryItemDiv.addEventListener('click', (event) => {
       // console.log(`inventory tile item type ${event.currentTarget.dataset.tileType}`);
-      minecraft.gamePanel.setSelectedItemUI(event.currentTarget);
+      const inventoryItemElement = event.currentTarget; // Get current inventory item element
+      minecraft.gamePanel.setSelectedItemUI(inventoryItemElement); //Set selected UI to current inventory item element
+
+      console.log(inventoryItemElement.dataset.tileType);
+      
+      // toolData = minecraft.gamePanel.tools.collection[toolElement.dataset.toolIndex]; //Get current tool object
+      // minecraft.playMode.setCurrentAction('addTile', toolData.removeTileType); // set play mode action
+
     });
      //Append current inventory item to inventory container
     inventoryContainer.appendChild(inventoryItemDiv);
   }
+};
+/** FUN: update Counter Ui of inventory item */
+minecraft.gamePanel.tilesInventory.updateItemCounterUi = (tileType) => {
+
+  let inventoryItem = document.querySelector(`[data-tile-type="${tileType}"]`);
+  let inventoryItemCounter = inventoryItem.querySelector('.tile-inventory-counter');
+
+  inventoryItemCounter.textContent = minecraft.gamePanel.tilesInventory.items[tileType];
 }
 
+/**
+ * FUN: set current action
+ * @param {string} actionName - removeTile / addTile
+ * @param {array[number]} actOnTileType  - contain tiles type action can act of
+ */
+minecraft.playMode.setCurrentAction = (actionName, actOnTileType) => {
+  minecraft.playMode.currentAction.name = actionName;
+  minecraft.playMode.currentAction.actOnTileType = actOnTileType;
+};
+/** FUN: remove selected tile */
+minecraft.playMode.removeTile = (selectedTile) => {
+
+  //Check if selected tool can remove selected tile
+  const preformOnTilesType = minecraft.playMode.currentAction.actOnTileType;
+  const isRemovable = preformOnTilesType.some((tileType) => tileType === minecraft.gameMap.getTileTypeInMatrix(selectedTile));
+
+  if (isRemovable){
+    //** Remove selected tile UI
+    selectedTile.classList.remove(minecraft.gameMap.getTileCssClassName(minecraft.gameMap.getTileTypeInMatrix(selectedTile)));
+
+    //Add the removed tile to the inventory + Update inventory UI
+    minecraft.gamePanel.tilesInventory.items[minecraft.gameMap.getTileTypeInMatrix(selectedTile)] += 1; 
+    minecraft.gamePanel.tilesInventory.updateItemCounterUi(minecraft.gameMap.getTileTypeInMatrix(selectedTile));
+     
+    //Update matrix
+    minecraft.gameMap.setTileTypeInMatrix(selectedTile, 0); // 0 = Sky
+  
+    //** update ui -> ADD  class SKY
+   selectedTile.classList.add(minecraft.gameMap.getTileCssClassName(minecraft.gameMap.getTileTypeInMatrix(selectedTile))); 
+ }
+ else {
+   console.log('animation in selected tool: border red ');
+ }
 
 
 
 
+};
 
-/** TEST: remove action */
-minecraft.playMode.currentAction = 'removeTile';
-minecraft.playMode.actOnTileType = [1,2];
 
-console.log(minecraft);
+
 /** Init Game *****************************************************************************************************/
 minecraft.gameMap.init(minecraft.gameMap.matrix);
 minecraft.gamePanel.tools.init(minecraft.gamePanel.tools.collection);
-minecraft.gamePanel.tilesInventory.init(minecraft.gamePanel.tilesInventory.collection);
+minecraft.gamePanel.tilesInventory.init(minecraft.gamePanel.tilesInventory.items);
 
