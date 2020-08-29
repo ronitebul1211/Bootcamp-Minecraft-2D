@@ -14,7 +14,7 @@ const minecraft =
     currentAction: 
     {
       name: '',
-      actOnTileType: []
+      tileType: [] 
     }
   }
 };
@@ -61,13 +61,13 @@ minecraft.gameMap.init = (matrix) => {
         tile.classList.add(minecraft.gameMap.getTileCssClassName(matrix[row][col]));
         //Set tiles event listener
         tile.addEventListener('click', (event) => {
-          const selectedTile = event.currentTarget;
+          const selectedTileElement = event.currentTarget;
            switch(minecraft.playMode.currentAction.name){
             case 'removeTile':
-              minecraft.playMode.removeTile(selectedTile);
+              minecraft.playMode.removeTile(selectedTileElement);
               break;
             case 'addTile':
-              console.log('call addTile function');
+              minecraft.playMode.addTile(selectedTileElement)
               break;
             case '':
               console.log('player did not take an action');
@@ -220,12 +220,8 @@ minecraft.gamePanel.tilesInventory.init = (inventory) => {
       // console.log(`inventory tile item type ${event.currentTarget.dataset.tileType}`);
       const inventoryItemElement = event.currentTarget; // Get current inventory item element
       minecraft.gamePanel.setSelectedItemUI(inventoryItemElement); //Set selected UI to current inventory item element
-
-      console.log(inventoryItemElement.dataset.tileType);
-      
-      // toolData = minecraft.gamePanel.tools.collection[toolElement.dataset.toolIndex]; //Get current tool object
-      // minecraft.playMode.setCurrentAction('addTile', toolData.removeTileType); // set play mode action
-
+      const tileType = parseInt(inventoryItemElement.dataset.tileType);
+      minecraft.playMode.setCurrentAction('addTile', [tileType]); // set play mode action
     });
      //Append current inventory item to inventory container
     inventoryContainer.appendChild(inventoryItemDiv);
@@ -233,27 +229,29 @@ minecraft.gamePanel.tilesInventory.init = (inventory) => {
 };
 /** FUN: update Counter Ui of inventory item */
 minecraft.gamePanel.tilesInventory.updateItemCounterUi = (tileType) => {
-
   let inventoryItem = document.querySelector(`[data-tile-type="${tileType}"]`);
   let inventoryItemCounter = inventoryItem.querySelector('.tile-inventory-counter');
-
-  inventoryItemCounter.textContent = minecraft.gamePanel.tilesInventory.items[tileType];
-}
+  inventoryItemCounter.textContent = minecraft.gamePanel.tilesInventory.getItemCount(tileType);
+};
+/** FUN: get data count of inventory item */
+minecraft.gamePanel.tilesInventory.getItemCount = (tileType) => {
+  return minecraft.gamePanel.tilesInventory.items[tileType];
+};
 
 /**
  * FUN: set current action
  * @param {string} actionName - removeTile / addTile
- * @param {array[number]} actOnTileType  - contain tiles type action can act of
+ * @param {array[number]} tileType  - contain tiles type action can act of
  */
-minecraft.playMode.setCurrentAction = (actionName, actOnTileType) => {
+minecraft.playMode.setCurrentAction = (actionName, tileType) => {
   minecraft.playMode.currentAction.name = actionName;
-  minecraft.playMode.currentAction.actOnTileType = actOnTileType;
+  minecraft.playMode.currentAction.tileType = tileType;
 };
 /** FUN: remove selected tile */
 minecraft.playMode.removeTile = (selectedTile) => {
 
   //Check if selected tool can remove selected tile
-  const preformOnTilesType = minecraft.playMode.currentAction.actOnTileType;
+  const preformOnTilesType = minecraft.playMode.currentAction.tileType;
   const isRemovable = preformOnTilesType.some((tileType) => tileType === minecraft.gameMap.getTileTypeInMatrix(selectedTile));
 
   if (isRemovable){
@@ -269,14 +267,34 @@ minecraft.playMode.removeTile = (selectedTile) => {
   
     //** update ui -> ADD  class SKY
    selectedTile.classList.add(minecraft.gameMap.getTileCssClassName(minecraft.gameMap.getTileTypeInMatrix(selectedTile))); 
- }
- else {
-   console.log('animation in selected tool: border red ');
- }
+  } else {
+    console.log('animation in selected tool: border red ');
+  }
+};
 
 
-
-
+/** FUN: add selected tile */
+minecraft.playMode.addTile = (selectedTileElement) => {
+  const tileTypeToAdd = parseInt(minecraft.playMode.currentAction.tileType)
+   // inventory check for type to add
+  if (minecraft.gamePanel.tilesInventory.getItemCount(tileTypeToAdd) > 0) {
+    // check if selected tile element is free to use
+    if( minecraft.gameMap.getTileTypeInMatrix(selectedTileElement) === 0 ){
+      //** Remove selected tile UI
+      selectedTileElement.classList.remove(minecraft.gameMap.getTileCssClassName(minecraft.gameMap.getTileTypeInMatrix(selectedTileElement)));
+      //Increment tile from inventory + Update inventory UI
+      minecraft.gamePanel.tilesInventory.items[tileTypeToAdd] -= 1; 
+      minecraft.gamePanel.tilesInventory.updateItemCounterUi(tileTypeToAdd);
+      //Update matrix
+      minecraft.gameMap.setTileTypeInMatrix(selectedTileElement, tileTypeToAdd);
+      //** update ui -> ADD  class of tile to add
+      selectedTileElement.classList.add(minecraft.gameMap.getTileCssClassName(tileTypeToAdd));
+    } else {
+      console.log('Tile element is unavailable');
+    }
+  } else {
+    console.log('There is no inventory for this tile');
+  }
 };
 
 
