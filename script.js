@@ -113,6 +113,22 @@ minecraft.gameMap.setTileTypeInMatrix = (selectedTile, tileType) => {
 }
 
 
+minecraft.gamePanel.init = () => {   
+  minecraft.gamePanel.tools.init(minecraft.gamePanel.tools.collection);
+  minecraft.gamePanel.tilesInventory.init(minecraft.gamePanel.tilesInventory.items); 
+  
+  
+  const resetButton = document.createElement('button');
+  resetButton.classList.add('reset-btn');
+  resetButton.textContent = 'RESET';
+  const gamePanel = document.querySelector('.game-panel')
+  gamePanel.appendChild(resetButton);
+  
+  resetButton.addEventListener('click', () => {
+    console.log('reset game');
+  });
+
+ }
  /**
  * This function set Selected UI to game panel item when it clicked 
  * @param {object} selectedItem - Element object 
@@ -310,7 +326,7 @@ minecraft.playMode.addTile = (selectedTileElement) => {
 
 /** Init Game *****************************************************************************************************/
 minecraft.gameMap.init(minecraft.gameMap.matrix);
-minecraft.gamePanel.tools.init(minecraft.gamePanel.tools.collection);
-minecraft.gamePanel.tilesInventory.init(minecraft.gamePanel.tilesInventory.items);
+minecraft.gamePanel.init();
+
 
 console.log(minecraft);
